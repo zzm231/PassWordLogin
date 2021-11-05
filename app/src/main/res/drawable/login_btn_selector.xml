@@ -9,7 +9,7 @@
     </item>
 
     <!--正常状态 蓝色背景 圆角矩形-->
-    <item >
+    <item>
         <shape android:shape="rectangle">
             <corners android:radius="5dp"/>
             <solid android:color="#39A4F9"/>
