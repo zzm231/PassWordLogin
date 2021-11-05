@@ -8,9 +8,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements TextWatcher {
@@ -18,6 +23,10 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
     private EditText user;
     private EditText password;
     private Button loginBtn;
+    private ImageView leftArm;
+    private ImageView rightArm;
+    private ImageView leftHand;
+    private ImageView rightHand;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,21 +40,25 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         user = findViewById(R.id.et_user);
         password = findViewById(R.id.et_password);
         loginBtn = findViewById(R.id.bt_login);
+        leftArm = findViewById(R.id.iv_left_arm);
+        rightArm = findViewById(R.id.iv_right_arm);
+        leftHand = findViewById(R.id.iv_left_hand);
+        rightHand = findViewById(R.id.iv_right_hand);
 
         // 监听内容改变 按钮是否可以点击
         user.addTextChangedListener(this);
         password.addTextChangedListener(this);
 
-        // 监听EditTexte的焦点变化 控制是否需要捂住眼睛
+        // 监听EditText的焦点变化 控制是否需要捂住眼睛
         password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus == true){
                     // 捂住眼睛
-                    Toast.makeText(getApplicationContext(),"捂住眼睛",Toast.LENGTH_SHORT).show();
+                    close();
                 }else {
                     // 放开眼睛
-                    Toast.makeText(getApplicationContext(),"打开",Toast.LENGTH_SHORT).show();
+                    open();
                 }
             }
         });
@@ -90,5 +103,51 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
             // 按钮不能点击
             loginBtn.setEnabled(false);
         }
+    }
+
+    // 闭眼
+    public void close(){
+        // 旋转翅膀 左边
+        RotateAnimation rAnim = new RotateAnimation(0,150,
+                leftArm.getWidth(),0f);
+        rAnim.setDuration(500);
+        rAnim.setFillAfter(true);
+
+        leftArm.startAnimation(rAnim);
+
+        // 旋转翅膀 右边
+        RotateAnimation lrAnim = new RotateAnimation(0,-150,
+                0f,0f);
+        lrAnim.setDuration(500);
+        lrAnim.setFillAfter(true);
+
+        rightArm.startAnimation(lrAnim);
+
+        TranslateAnimation down = (TranslateAnimation) AnimationUtils.loadAnimation(this,R.anim.hand_down_anim);
+        leftHand.startAnimation(down);
+        rightHand.startAnimation(down);
+    }
+
+    // 睁眼
+    public void open(){
+        // 旋转翅膀 左边
+        RotateAnimation rAnim = new RotateAnimation(160,0,
+                leftArm.getWidth(),0f);
+        rAnim.setDuration(500);
+        rAnim.setFillAfter(true);
+
+        leftArm.startAnimation(rAnim);
+
+        // 旋转翅膀 右边
+        RotateAnimation lrAnim = new RotateAnimation(-160,0,
+                0f,0f);
+        lrAnim.setDuration(500);
+        lrAnim.setFillAfter(true);
+
+        rightArm.startAnimation(lrAnim);
+
+        TranslateAnimation up = (TranslateAnimation) AnimationUtils.loadAnimation(this,R.anim.hand_up_anim);
+        leftHand.startAnimation(up);
+        rightHand.startAnimation(up);
     }
 }
