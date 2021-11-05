@@ -1,0 +1,4 @@
+com/swu/zzm/java4/BuildConfig.java
+ com.swu.zzm.java4.BuildConfig
+com/swu/zzm/java4/MainActivity.java
+ com.swu.zzm.java4.MainActivity
